@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { DisposalLocation } from "@/data/locations";
-import { Icon } from "leaflet";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import LocationCard from "./LocationCard";
 
@@ -10,7 +11,15 @@ interface DisposalMapProps {
   zoom?: number;
 }
 
-const customIcon = new Icon({
+// Fix default icon issue with Leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+});
+
+const customIcon = L.icon({
   iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
   iconSize: [25, 41],
@@ -20,6 +29,10 @@ const customIcon = new Icon({
 });
 
 const DisposalMap = ({ locations, center = [-26.7689, -48.6428], zoom = 13 }: DisposalMapProps) => {
+  useEffect(() => {
+    console.log("DisposalMap mounted with", locations.length, "locations");
+  }, [locations]);
+
   return (
     <MapContainer
       center={center}
