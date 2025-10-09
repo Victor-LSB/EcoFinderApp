@@ -1,8 +1,8 @@
-import { useState, useMemo, lazy, Suspense } from "react";
+import { useState, useMemo } from "react";
 import { Leaf, MapPin, Search as SearchIcon } from "lucide-react";
 import SearchBar from "@/components/SearchBar";
 import CategoryFilter from "@/components/CategoryFilter";
-const DisposalMap = lazy(() => import("@/components/DisposalMap"));
+import DisposalMap from "@/components/DisposalMap";
 import LocationCard from "@/components/LocationCard";
 import EducationalSection from "@/components/EducationalSection";
 import { disposalLocations, wasteCategories, WasteCategory } from "@/data/locations";
@@ -131,13 +131,7 @@ const Index = () => {
           {/* Map or List View */}
           {showMap ? (
             <div className="h-[500px] md:h-[600px] rounded-xl overflow-hidden">
-              <Suspense fallback={
-                <div className="h-full w-full flex items-center justify-center bg-muted">
-                  <p className="text-muted-foreground">Carregando mapa...</p>
-                </div>
-              }>
-                <DisposalMap locations={filteredLocations} />
-              </Suspense>
+              <DisposalMap locations={filteredLocations} />
             </div>
           ) : (
             <ScrollArea className="h-[500px] md:h-[600px]">
