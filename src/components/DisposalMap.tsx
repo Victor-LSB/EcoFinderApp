@@ -27,23 +27,21 @@ const DisposalMap = ({ locations, center = [-26.7689, -48.6428], zoom = 13 }: Di
       className="h-full w-full rounded-xl shadow-lg z-0"
       scrollWheelZoom={true}
     >
-      <>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {locations.map((location) => (
-          <Marker
-            key={location.id}
-            position={[location.lat, location.lng]}
-            icon={customIcon}
-          >
-            <Popup className="custom-popup" maxWidth={400}>
-              <LocationCard location={location} />
-            </Popup>
-          </Marker>
-        ))}
-      </>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {locations.map((location) => (
+        <Marker
+          key={location.id}
+          position={[location.lat, location.lng]}
+          icon={customIcon}
+        >
+          <Popup className="custom-popup" maxWidth={400}>
+            <LocationCard location={location} />
+          </Popup>
+        </Marker>
+      ))}
     </MapContainer>
   );
 };
