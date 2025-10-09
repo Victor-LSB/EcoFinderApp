@@ -14,6 +14,20 @@ const Index = () => {
   const [selectedCategories, setSelectedCategories] = useState<WasteCategory[]>([]);
   const [showMap, setShowMap] = useState(true);
 
+  // Criar lista de sugestões única de todos os materiais aceitos
+  const allSuggestions = useMemo(() => {
+    const materials = new Set<string>();
+    materials.add("Lixo eletrônico"); // Adicionar opção para mostrar todos
+    
+    disposalLocations.forEach(location => {
+      location.acceptedMaterials.forEach(material => {
+        materials.add(material);
+      });
+    });
+    
+    return Array.from(materials).sort();
+  }, []);
+
   const handleCategoryToggle = (category: WasteCategory) => {
     setSelectedCategories((prev) =>
       prev.includes(category)
@@ -28,6 +42,12 @@ const Index = () => {
     // Filter by search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
+      
+      // Se buscar por "lixo eletrônico", mostrar todos os pontos
+      if (query === "lixo eletrônico") {
+        return disposalLocations;
+      }
+      
       filtered = filtered.filter(
         (location) =>
           location.name.toLowerCase().includes(query) ||
@@ -85,7 +105,8 @@ const Index = () => {
             <SearchBar
               value={searchQuery}
               onChange={setSearchQuery}
-              placeholder="Buscar item (ex: pilhas, celular, computador...)"
+              placeholder="Buscar item (ex: pilhas, celular, lixo eletrônico...)"
+              suggestions={allSuggestions}
             />
           </div>
         </div>
